@@ -13,7 +13,7 @@ class SimpleNLP(torch.nn.Module):
         for layer in layers_list:
             layers.append(torch.nn.Linear(layer[0], layer[1]))
             # as parameter
-            layers.append(torch.nn.ReLU())
+            layers.append(torch.nn.Sigmoid())
 
         layers.append(torch.nn.Softmax())
         self.net = torch.nn.Sequential(*layers)

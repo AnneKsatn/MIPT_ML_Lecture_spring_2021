@@ -1,0 +1,2 @@
+element 0 (tensor([0.8117, 1.5383]), tensor(0, dtype=torch.int32))
+element 10 (tensor([-0.6292, -0.7175]), tensor(1, dtype=torch.int32))

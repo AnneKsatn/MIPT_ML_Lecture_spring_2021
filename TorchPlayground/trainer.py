@@ -41,6 +41,7 @@ class Trainer:
 
                 if(epoch == 0) and (i == 0):
                     self.writer.add_graph(self.model, x_batch)
+
                 self.optimizer.zero_grad()
                 output = self.model(x_batch)
                 loss = self.criterion(output, y_batch)
@@ -116,8 +117,8 @@ if __name__ == "__main__":
     trainer = Trainer(model, lr=0.01)
     print(trainer.device)
 
-    train_dataset = Circles(n_samples=5000, shuffle=True, noise=0.01, random_state=0, factor=.5)
-    test_dataset = Circles(n_samples=10, shuffle=True, noise=0.01, random_state=2, factor=.5)
+    train_dataset = Circles(n_samples=5000, shuffle=True, noise=0.1, random_state=0, factor=.5)
+    test_dataset = Circles(n_samples=10, shuffle=True, noise=0.1, random_state=2, factor=.5)
 
     print(train_dataset)
 

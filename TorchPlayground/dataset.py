@@ -9,6 +9,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import datasets
 
 import matplotlib.pyplot as plt
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    format="%(asctime)s %(processName)-10s %(name)s - %(levelname)s: %(message)s")
 
 class Circles(Dataset):
 
@@ -37,16 +41,25 @@ class Circles(Dataset):
 
 if __name__ == '__main__':
 
+    logger = logging.getLogger("dataset")
+    handler = logging.StreamHandler()
+
+    file_handler = logging.FileHandler("logs.log")
+    logger.addHandler(file_handler)
+
     circles = Circles(n_samples=5000, shuffle=True, noise=0.1, random_state=0, factor=0.8)
     print(circles.X)
     print(circles.y)
 
     print(len(circles))
 
+    logger.info(f'element 0 {circles[0]}')
+    logger.info(f'element 10 {circles[10]}')
+
     #circles.plot_data()
 
-    train_dataset = Circles(n_samples=50, shuffle=True, noise=0.01, random_state=0, factor=0.5)
-    test_dataset = Circles(n_samples=10, shuffle=True, noise=0.01, random_state=0, factor=0.5)
+    train_dataset = Circles(n_samples=50, shuffle=True, noise=0.1, random_state=0, factor=0.5)
+    test_dataset = Circles(n_samples=10, shuffle=True, noise=0.1, random_state=0, factor=0.5)
 
 
     train_dataloader = DataLoader(train_dataset, batch_size=5, shuffle=True)
