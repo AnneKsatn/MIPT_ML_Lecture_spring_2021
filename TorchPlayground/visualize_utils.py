@@ -33,7 +33,7 @@ def predict_proba_om_mesh(clf, xx, yy):
     return Z
 
 
-def plot_predictions(xx, yy, Z, X_train=None, X_test=None,
+def plot_predictions(xx, yy, Z, plot_name="1.png", X_train=None, X_test=None,
                      y_train=None, y_test=None, figsize=(10, 10),
                      title="predictions",
                      cm=plt.cm.RdBu,
@@ -42,17 +42,18 @@ def plot_predictions(xx, yy, Z, X_train=None, X_test=None,
     plt.contourf(xx, yy, Z, cmap=cm, alpha=.8)
 
     if X_train is not None:
-        plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright)
+        plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright, alpha=0.2)
 
     if X_test is not None:
         plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test, cmap=cm_bright,
-                    edgecolors='k', alpha=0.6)
+                    edgecolors='k')
 
     plt.xlim((xx.min(), xx.max()))
     plt.ylim((yy.min(), yy.max()))
-    plt.title(title)
+    plt.title(plot_name)
     plt.tight_layout()
-    plt.show()
+    # plt.show()
+    plt.savefig(plot_name)
 
 
 if __name__ == "__main__":

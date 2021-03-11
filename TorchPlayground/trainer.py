@@ -39,6 +39,9 @@ class Trainer:
 
             for i, (x_batch, y_batch) in enumerate(train_dataloader):
 
+                x_batch = torch.tensor(x_batch)
+                y_batch = torch.tensor(y_batch, dtype=torch.long)
+
                 if(epoch == 0) and (i == 0):
                     self.writer.add_graph(self.model, x_batch)
 
@@ -49,6 +52,24 @@ class Trainer:
                 self.optimizer.step()
 
                 epoch_loss += loss.item()
+
+                # if (epoch > 40) and (i == 0):
+
+                if (epoch < 30) and (i == 0):
+                    print("save image", epoch, " ", i)
+
+                    train_dataset = train_dataloader.dataset
+
+                    X_train, X_test, y_train, y_test = get_data_from_datasets(train_dataset,
+                                                                              train_dataset)
+
+                    xx, yy = make_meshgrid(X_train, X_test, y_train, y_test)
+                    Z = predict_proba_om_mesh_tensor(self, xx, yy)
+
+                    plot_predictions(xx, yy, Z, X_train=X_train, X_test=X_test,
+                                     y_train=y_train, y_test=y_test,
+                                     plot_name="nn_predictions/nn_predictions_%04d.png"%epoch)
+
 
             print(epoch_loss / len(train_dataloader))
 
@@ -118,21 +139,21 @@ if __name__ == "__main__":
     print(trainer.device)
 
     train_dataset = Circles(n_samples=5000, shuffle=True, noise=0.1, random_state=0, factor=.5)
-    test_dataset = Circles(n_samples=10, shuffle=True, noise=0.1, random_state=2, factor=.5)
+    test_dataset = Circles(n_samples=1000, shuffle=True, noise=0.1, random_state=2, factor=.5)
 
     print(train_dataset)
 
 
 
-    inputs = torch.tensor(train_dataset.X)
-    targets = torch.tensor(train_dataset.y, dtype=torch.long)
+    # X = torch.tensor(train_dataset.X)
+    # y = torch.tensor(train_dataset.y, dtype=torch.long)
 
-    dataset = TensorDataset(inputs, targets)
+    # dataset = TensorDataset(X, y)
 
-    train_dataloader = DataLoader(dataset, batch_size=50, shuffle=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=50, shuffle=True)
     test_dataloader = DataLoader(test_dataset, batch_size=50, shuffle=True)
 
-    trainer.fit(train_dataloader, n_epochs=50)
+    trainer.fit(train_dataloader, n_epochs=100)
 
     # test_predicion = trainer.predict(test_dataloader)
     # print(test_predicion)
